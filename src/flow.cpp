@@ -13,26 +13,11 @@ namespace cse
             static auto& mono = MonoMethods::GetInstance();
             auto& managers = *reinterpret_cast<std::vector<std::pair<MonoObject*, MonoDomain*>>*>(user_data);
 
-            auto thread = mono.thread_attach(domain);
-            if (!thread)
-            {
-                println("[CSE] Failed to attach to domain: %p\n", domain);
-                return;
-            }
-
-            mono.domain_set(domain);
-
-            auto cleanup = [&]()
-            {
-                mono.domain_set(mono.get_root_domain());
-                mono.thread_detach(thread);
-            };
-
+            MonoScope scope(domain);
             MonoAssembly* assembly = mono.domain_open_assembly(domain, "CitizenFX.Core");
             if (!assembly)
             {
                 println("[CSE] Failed to open CitizenFX.Core assembly in domain\n");
-                cleanup();
                 return;
             }
 
@@ -40,7 +25,6 @@ namespace cse
             if (!image)
             {
                 println("[CSE] Failed to get CitizenFX.Core image\n");
-                cleanup();
                 return;
             }
 
@@ -48,7 +32,6 @@ namespace cse
             if (!klass)
             {
                 println("[CSE] Failed to find InternalManager class\n");
-                cleanup();
                 return;
             }
 
@@ -56,7 +39,6 @@ namespace cse
             if (!field)
             {
                 println("[CSE] Failed to find GlobalManager field\n");
-                cleanup();
                 return;
             }
 
@@ -64,7 +46,6 @@ namespace cse
             if (!vtable)
             {
                 println("[CSE] Failed to get vtable for InternalManager\n");
-                cleanup();
                 return;
             }
 
@@ -73,12 +54,10 @@ namespace cse
             if (!fieldValue)
             {
                 println("[CSE] GlobalManager field is null\n");
-                cleanup();
                 return;
             }
 
-            managers.push_back(std::make_pair((MonoObject*)fieldValue, domain));
-            cleanup();
+            managers.emplace_back((MonoObject*)fieldValue, domain);
         };
 
         mono.domain_foreach(callback, &managers);

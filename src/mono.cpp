@@ -72,15 +72,23 @@ namespace cse
 
         // Static field get value
         using field_static_get_value_func = void (*)(void* vtable, MonoField* field, void** value);
+
+        // Get field value from object instance
         using field_get_value_object_func = MonoObject* (*)(MonoDomain* domain, MonoField* field, MonoObject* obj);
 
+        // Get domain friendly name
         using domain_get_friendly_name_func = const char* (*)(MonoDomain* domain);
 
+        // Create a new array
         using array_new_func = void* (*)(MonoDomain* domain, MonoClass* eclass, uintptr_t n);
+        
+        // Get address of array element with size
         using array_addr_with_size_func = void* (*)(void* array, int size, uintptr_t idx);
 
+        // Get the Mono class for byte type
         using get_byte_class_func = MonoClass* (*)();
 
+        // Convert object to string
         using object_to_string_func = MonoString* (*)(MonoObject* obj, MonoObject** exc);
     }
 

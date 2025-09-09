@@ -5,7 +5,7 @@ This project allows you to load and execute managed assemblies `(.NET / C#)` dir
 
 It is a working executor, but not yet fully featured – currently limited to executing assemblies stored as raw byte arrays in headers.
 
-### Currently executed script is a simple `sanchez` spawner (clicking F6 spawns and places player into it)
+### Currently executed script is a simple `sanchez` spawner (clicking F6 spawns and places player into it) (source is in ExecutedResource.cs)
 
 ### Loaded scripts should be created just like you would make FiveM c# scripts, see: [FiveM docs](https://docs.fivem.net/docs/scripting-manual/runtimes/csharp/)
 

@@ -51,6 +51,7 @@ namespace cse
             }
 
             name = std::string(nameStr);
+            methods.free(nameStr);
         }
 
         return name;
@@ -75,10 +76,7 @@ namespace cse
         }
         else
         {
-            if (m_Runtimes.empty())
-            {
-                FindRuntimes();
-            }
+            FindRuntimes();
 
             if (m_Runtimes.empty())
             {
