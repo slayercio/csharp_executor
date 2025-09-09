@@ -34,6 +34,8 @@ namespace cse
         bool Execute(const std::string& scriptName, const std::vector<uint8_t> &scriptData, 
             std::optional<std::reference_wrapper<std::vector<uint8_t>>> pdbData = std::nullopt, std::optional<std::reference_wrapper<RuntimeInfo>> runtime = std::nullopt);
 
+
+        const std::vector<RuntimeInfo>& GetRuntimes();
     private:
         /**
          * @brief Finds and initializes all available Mono runtimes in the current process.
