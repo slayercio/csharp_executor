@@ -101,13 +101,6 @@ std::string RuntimeInfo::GetResourceName() const;
 ```
 Returns a string containing name of the resource owning the runtime
 
-## Extending
-Right now, the executor only runs a single hardcoded script blob. (F6 to spawn a sanchez)
-
-To extend functionality:
-1. **Load assemblies from disk**
-    - replace `scriptData` in `executor.Execute("test_script", scriptData);` with your loaded assembly
-2. **Runtime selection**
-    - add a selector based on resource name
-    - pass the selected runtime into `executor.Execute("test_script", scriptData, std::nullopt, std::cref(runtime));`
-
+# TODO
+- Implement creating new runtime
+- Implement creating runtimes for resources that don't have it
