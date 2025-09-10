@@ -65,7 +65,7 @@ namespace cse
 
     bool Executor::Execute(const std::string& scriptName, const std::vector<uint8_t>& scriptData,
         std::optional<std::reference_wrapper<std::vector<uint8_t>>> pdbData,
-        std::optional<std::reference_wrapper<RuntimeInfo>> runtime)
+        std::optional<std::reference_wrapper<const RuntimeInfo>> runtime)
     {
         static MonoMethods& methods = MonoMethods::GetInstance();
 
@@ -164,6 +164,34 @@ namespace cse
             println("[CSE] Script executed successfully!");
             return true;
         }
+    }
+
+    const std::vector<RuntimeInfo>& Executor::GetRuntimes()
+    {
+        FindRuntimes();
+        
+        std::vector<RuntimeInfo> validRuntimes;
+        for (const auto& runtime : m_Runtimes)
+        {
+            auto it = std::find_if(validRuntimes.begin(), validRuntimes.end(), [&](const RuntimeInfo& r)
+            {
+                return r.GetResourceName() == runtime.GetResourceName();
+            });
+
+            if (it != validRuntimes.end())
+            {
+                continue;
+            }
+
+            if (runtime.m_Domain && runtime.m_InternalManager && runtime.m_CreateAssemblyInternal && runtime.GetResourceName().length() > 0)
+            {
+                println("[CSE] Found valid runtime in resource: %s", runtime.GetResourceName().c_str());
+                validRuntimes.push_back(runtime);
+            }
+        }
+
+        m_Runtimes = std::move(validRuntimes);
+        return m_Runtimes;
     }
 
     void Executor::FindRuntimes()

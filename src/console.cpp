@@ -33,9 +33,14 @@ namespace cse
     // switch between adhesive and no-adhesive version here
     std::function<void()> init_console()
     {
-        // return init_noadhesive(); 
-    
-        return init_adhesive();
+        if (GetModuleHandleA("adhesive.dll"))
+        {
+            return init_adhesive();
+        }
+        else
+        {
+            return init_noadhesive();
+        }
     }
 
     void println(const char* fmt, ...)

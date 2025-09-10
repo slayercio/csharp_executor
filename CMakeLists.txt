@@ -7,4 +7,4 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 file(GLOB_RECURSE SOURCES src/**.cpp)
 
 add_library(csharp_exec SHARED ${SOURCES})
-target_include_directories(csharp_exec PRIVATE include)
+target_include_directories(csharp_exec PRIVATE include vendor/json/include)

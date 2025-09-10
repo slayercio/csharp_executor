@@ -89,7 +89,6 @@ namespace cse
         {
             static auto& methods = MonoMethods::GetInstance();
             m_OldDomain = methods.domain_get();
-            println("[CSE] Attaching thread to domain: %p, old domain: %p", domain, m_OldDomain);
 
             if (!domain)
             {
@@ -106,14 +105,12 @@ namespace cse
             }
 
             methods.domain_set(domain);
-            println("[CSE] Attached thread to domain: %p", domain);
         }
 
         inline MonoScope()
         {
             static auto& methods = MonoMethods::GetInstance();
             m_OldDomain = methods.domain_get();
-            println("[CSE] Attaching thread to root domain, old domain: %p", m_OldDomain);
 
             MonoDomain* root = methods.get_root_domain();
             if (!root)
@@ -131,7 +128,6 @@ namespace cse
             }
 
             methods.domain_set(root);
-            println("[CSE] Attached thread to root domain: %p", root);
         }
 
         inline ~MonoScope()
@@ -140,13 +136,11 @@ namespace cse
             if (thread)
             {
                 methods.thread_detach(thread);
-                println("[CSE] Detached thread from domain: %p", methods.domain_get());
             }
 
             if (m_OldDomain)
             {
                 methods.domain_set(m_OldDomain);
-                println("[CSE] Restored old domain: %p", m_OldDomain);
             }
         }
     };
