@@ -35,6 +35,8 @@ static std::vector<uint8_t> scriptData = std::vector<uint8_t>(
 executor.Execute("test_script", scriptData);
 ```
 
+### Alternatively u can use included GUI to execute
+
 ## Building
 The project uses **CMake** for cross-platform builds.
 ```sh
